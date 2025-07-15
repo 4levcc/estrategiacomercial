@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blueprint Interativo: Tráfego Pago para Ebook B2B</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals & Subtle Blues -->
+    <!-- Application Structure Plan: A four-step guided flow (Estratégia, Plataformas, Execução, Métricas) using a tabbed navigation. This structure transforms the report from a passive document into an active, task-oriented tool that mirrors the user's journey of building a campaign. It breaks down complex information into digestible, interactive sections (e.g., platform comparison tabs, interactive landing page checklist, KPI diagnostic tool) to enhance usability and comprehension for busy managers. -->
+    <!-- Visualization & Content Choices: Report tables were converted into interactive elements. Platform Comparison -> Clickable tabs for focused analysis. "Pinça" Strategy -> HTML/CSS flowchart for clarity. Landing Page Elements -> Interactive visual diagram for a practical checklist. KPI Optimization -> Dropdown diagnostic tool for actionable insights. A bar chart visualizes relative platform costs. This approach prioritizes engagement and practical application over static data presentation. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .tab-active { border-color: #3b82f6; color: #3b82f6; background-color: #eff6ff; }
+        .tab-inactive { border-color: transparent; color: #4b5563; }
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 350px; max-height: 400px; }
+        @media (min-width: 768px) { .chart-container { height: 400px; } }
+        .fade-in { animation: fadeIn 0.5s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-7xl">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-2">O Blueprint do Arquiteto</h1>
+            <p class="text-lg text-gray-600">Um Guia Interativo de Tráfego Pago para seu Ebook de Finanças</p>
+        </header>
+
+        <nav class="mb-10 border border-gray-200 rounded-lg p-2 bg-white shadow-sm flex flex-col sm:flex-row justify-center items-center space-y-2 sm:space-y-0 sm:space-x-2">
+            <button data-tab="strategy" class="nav-tab tab-active w-full sm:w-auto text-center px-4 py-2.5 font-semibold text-sm rounded-md border-b-2 transition-all duration-300">1. Estratégia</button>
+            <button data-tab="platforms" class="nav-tab tab-inactive w-full sm:w-auto text-center px-4 py-2.5 font-semibold text-sm rounded-md border-b-2 transition-all duration-300">2. Plataformas</button>
+            <button data-tab="execution" class="nav-tab tab-inactive w-full sm:w-auto text-center px-4 py-2.5 font-semibold text-sm rounded-md border-b-2 transition-all duration-300">3. Execução</button>
+            <button data-tab="metrics" class="nav-tab tab-inactive w-full sm:w-auto text-center px-4 py-2.5 font-semibold text-sm rounded-md border-b-2 transition-all duration-300">4. Métricas</button>
+        </nav>
+
+        <main>
+            <section id="strategy" class="content-section active fade-in">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900">A Fundação Estratégica</h2>
+                    <p class="mt-2 text-gray-600 max-w-3xl mx-auto">Nesta seção inicial, definimos os pilares da sua campanha. Entenda o papel do seu ebook no funil de marketing e visualize a estratégia multicanal que irá guiar seus esforços para capturar e nutrir leads qualificados.</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8 items-start">
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                        <h3 class="text-xl font-bold mb-4 text-gray-900">Qual o papel do seu Ebook?</h3>
+                        <p class="text-gray-600 mb-4">A primeira decisão estratégica é como posicionar seu ebook. Para um público B2B, a abordagem de 'Isca Digital' é a mais recomendada para construir confiança e gerar leads de alto valor.</p>
+                        <div class="space-y-3">
+                            <div class="border-2 border-blue-500 bg-blue-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-blue-800">✓ Isca Digital (Recomendado)</h4>
+                                <p class="text-sm text-blue-700">Ofereça o ebook gratuitamente em troca de contatos. O objetivo é gerar leads qualificados para nutrir um relacionamento de longo prazo. Foco na métrica CPL (Custo por Lead).</p>
+                            </div>
+                            <div class="border border-gray-300 p-4 rounded-lg">
+                                <h4 class="font-bold text-gray-800">Produto de Entrada</h4>
+                                <p class="text-sm text-gray-600">Venda o ebook por um preço baixo. O objetivo é converter um prospect em cliente rapidamente. Foco na métrica ROAS (Retorno sobre o Investimento).</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                        <h3 class="text-xl font-bold mb-4 text-gray-900">A Estratégia "Pinça"</h3>
+                         <p class="text-gray-600 mb-6">Utilize uma abordagem multicanal para maximizar a eficiência. Use canais de alta qualificação para atrair e canais de baixo custo para reengajar.</p>
+                        <div class="space-y-4">
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 bg-blue-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4">1</div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">Geração de Tráfego (As Pinças)</h4>
+                                    <p class="text-sm text-gray-600">Alcance proativamente gestores no <span class="font-semibold">LinkedIn</span> e capture buscas ativas por soluções no <span class="font-semibold">Google Ads</span>.</p>
+                                </div>
+                            </div>
+                            <div class="pl-5">
+                                 <span class="block w-px h-8 bg-gray-300 ml-3.5"></span>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 bg-gray-700 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4">➔</div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">Página de Captura</h4>
+                                    <p class="text-sm text-gray-600">Todo tráfego qualificado é direcionado para sua landing page de alta conversão.</p>
+                                </div>
+                            </div>
+                             <div class="pl-5">
+                                 <span class="block w-px h-8 bg-gray-300 ml-3.5"></span>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 bg-green-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4">2</div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">Remarketing (O Cerco)</h4>
+                                    <p class="text-sm text-gray-600">Reengaje visitantes que não converteram usando anúncios de baixo custo no <span class="font-semibold">Facebook & Instagram (Meta Ads)</span>.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="platforms" class="content-section fade-in">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900">Análise de Plataformas</h2>
+                    <p class="mt-2 text-gray-600 max-w-3xl mx-auto">Nesta seção, vamos explorar as principais plataformas de anúncios para o seu público B2B. Compare interativamente os pontos fortes de cada uma e aprenda a segmentar seu público com precisão cirúrgica para maximizar seu investimento.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 mb-8">
+                     <h3 class="text-xl font-bold mb-6 text-center text-gray-900">Comparativo Interativo de Plataformas</h3>
+                    <div class="flex flex-col sm:flex-row border-b border-gray-200">
+                        <button class="platform-tab flex-1 p-4 font-semibold text-gray-700 border-b-2 border-blue-500" data-platform="linkedin">LinkedIn Ads</button>
+                        <button class="platform-tab flex-1 p-4 font-semibold text-gray-500 border-b-2 border-transparent" data-platform="google">Google Ads</button>
+                        <button class="platform-tab flex-1 p-4 font-semibold text-gray-500 border-b-2 border-transparent" data-platform="meta">Meta Ads</button>
+                    </div>
+                    <div id="platform-content" class="pt-6 grid md:grid-cols-3 gap-6">
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                    <h3 class="text-xl font-bold mb-6 text-center text-gray-900">Visualização de Custo e Precisão</h3>
+                    <div class="chart-container">
+                        <canvas id="platformChart"></canvas>
+                    </div>
+                    <p class="text-center text-sm text-gray-500 mt-4">Este gráfico ilustra a relação geral entre o custo de uma plataforma e sua precisão na segmentação B2B. O LinkedIn oferece a maior precisão a um custo mais alto, enquanto a Meta é mais econômica, sendo ideal para remarketing.</p>
+                </div>
+            </section>
+
+            <section id="execution" class="content-section fade-in">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900">Execução: Criativos e Landing Page</h2>
+                    <p class="mt-2 text-gray-600 max-w-3xl mx-auto">Aqui, transformamos a estratégia em ação. Aprenda a criar anúncios que capturam a atenção do seu público cético e a construir uma página de captura otimizada para converter visitantes em leads valiosos.</p>
+                </div>
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                        <h3 class="text-xl font-bold mb-4 text-gray-900">Anúncios de Alto Impacto</h3>
+                        <p class="text-gray-600 mb-4">Seus anúncios precisam transmitir credibilidade e valor instantaneamente. Foque em visuais profissionais e copy que fala diretamente às dores do seu público.</p>
+                        
+                        <div class="mb-6">
+                            <h4 class="font-semibold text-gray-800 mb-2">Estruturas de Copywriting</h4>
+                            <div class="flex space-x-2 mb-2">
+                                <button class="copy-tab flex-1 text-sm p-2 rounded-md bg-blue-100 text-blue-700 font-semibold" data-copy="aida">AIDA</button>
+                                <button class="copy-tab flex-1 text-sm p-2 rounded-md bg-gray-100 text-gray-600 font-semibold" data-copy="pas">PAS</button>
+                            </div>
+                            <div id="copy-content" class="text-sm p-4 bg-gray-50 rounded-md border"></div>
+                        </div>
+                    </div>
+                     <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                        <h3 class="text-xl font-bold mb-4 text-gray-900">Checklist da Landing Page de Alta Conversão</h3>
+                        <p class="text-gray-600 mb-4">Sua página tem um único objetivo: converter. Cada elemento deve ser otimizado para construir confiança e levar à ação. Passe o mouse sobre os itens para dicas.</p>
+                        <div class="border-2 border-gray-300 rounded-lg p-4 bg-gray-50">
+                            <div class="space-y-3">
+                                <div class="lp-item" title="Comunique o principal benefício e transformação em menos de 5 segundos. Ex: 'Transforme Dados em Decisões de Lucro'.">✓ Título Focado em Benefícios</div>
+                                <div class="lp-item" title="Crie uma percepção de valor tangível com um mockup profissional da capa do seu ebook.">✓ Mockup Profissional do Ebook</div>
+                                <div class="lp-item" title="Use bullet points para listar o que o leitor aprenderá a fazer. Ex: '✓ Crie um painel de KPIs em tempo real.'">✓ Copy com Benefícios Claros</div>
+                                <div class="lp-item" title="Inclua depoimentos com nome, cargo e foto. Logos de clientes e menções na mídia validam sua autoridade.">✓ Prova Social Incontestável</div>
+                                <div class="lp-item" title="Peça apenas o essencial, como 'Nome' e 'E-mail Corporativo', para reduzir o atrito.">✓ Formulário Minimalista</div>
+                                <div class="lp-item" title="Use um texto ativo e que reforce o valor. Ex: 'Quero Meu Guia Agora' em vez de 'Enviar'.">✓ CTA (Call-to-Action) Forte</div>
+                                <div class="lp-item" title="Estabeleça sua credibilidade. Por que você é a autoridade neste assunto? Mostre sua experiência.">✓ Biografia do Autor</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="metrics" class="content-section fade-in">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900">Métricas e Otimização</h2>
+                    <p class="mt-2 text-gray-600 max-w-3xl mx-auto">Lançar a campanha é só o começo. Nesta etapa final, aprenda a medir o que realmente importa, a gerenciar seu orçamento e a usar um framework de otimização para tomar decisões baseadas em dados e maximizar seu retorno.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-6 mb-8 text-center">
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                        <h4 class="font-bold text-lg text-gray-900">CPL (Custo por Lead)</h4>
+                        <p class="text-3xl font-bold text-blue-600 my-2" id="kpi-cpl">R$ 15.70</p>
+                        <p class="text-sm text-gray-500">A métrica principal. Quanto custa adquirir um novo prospect qualificado.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                        <h4 class="font-bold text-lg text-gray-900">Taxa de Conversão</h4>
+                        <p class="text-3xl font-bold text-blue-600 my-2" id="kpi-cr">4.5%</p>
+                        <p class="text-sm text-gray-500">A eficácia da sua landing page em persuadir os visitantes.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                        <h4 class="font-bold text-lg text-gray-900">CTR (Taxa de Cliques)</h4>
+                        <p class="text-3xl font-bold text-blue-600 my-2" id="kpi-ctr">1.2%</p>
+                        <p class="text-sm text-gray-500">A relevância e o apelo dos seus anúncios para a audiência.</p>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                     <h3 class="text-xl font-bold mb-4 text-center text-gray-900">Framework de Otimização Interativo</h3>
+                     <p class="text-gray-600 text-center mb-6 max-w-2xl mx-auto">Use esta ferramenta para diagnosticar gargalos na sua campanha. Selecione o problema que você está enfrentando para ver a causa provável e a ação recomendada.</p>
+                    <div class="max-w-xl mx-auto">
+                        <label for="problem-selector" class="block font-semibold text-gray-700 mb-2">Se o meu...</label>
+                        <select id="problem-selector" class="w-full p-3 border border-gray-300 rounded-md bg-white">
+                            <option value="none" selected disabled>Selecione um problema...</option>
+                            <option value="ctr">CTR (Taxa de Cliques) está baixo...</option>
+                            <option value="cpc">CPC (Custo por Clique) está muito alto...</option>
+                            <option value="conversion">Taxa de Conversão da Landing Page está baixa...</option>
+                            <option value="cpl">CPL (Custo por Lead) geral está alto...</option>
+                        </select>
+                        <div id="solution-box" class="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-md text-blue-800 hidden">
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.nav-tab');
+            const sections = document.querySelectorAll('.content-section');
+            const platformTabs = document.querySelectorAll('.platform-tab');
+            const platformContent = document.getElementById('platform-content');
+            const copyTabs = document.querySelectorAll('.copy-tab');
+            const copyContent = document.getElementById('copy-content');
+            const problemSelector = document.getElementById('problem-selector');
+            const solutionBox = document.getElementById('solution-box');
+
+            const platformData = {
+                linkedin: {
+                    title: 'LinkedIn Ads',
+                    content: [
+                        { icon: '🎯', label: 'Força Primária', text: 'Precisão na segmentação profissional (cargos, setores, senioridade).' },
+                        { icon: '🤔', label: 'Mentalidade do Público', text: 'Profissional, focado em desenvolvimento e negócios.' },
+                        { icon: '💰', label: 'Custo Típico', text: 'Alto. Paga-se pela qualidade e precisão dos dados.' },
+                        { icon: '📈', label: 'Estágio do Funil', text: 'Topo/Meio (Consideração). Ideal para alcançar perfis qualificados.' }
+                    ]
+                },
+                google: {
+                    title: 'Google Ads (Pesquisa)',
+                    content: [
+                        { icon: '🎯', label: 'Força Primária', text: 'Captura de alta intenção. O usuário está buscando ativamente uma solução.' },
+                        { icon: '🤔', label: 'Mentalidade do Público', text: 'Resolvendo um problema ativamente, buscando respostas.' },
+                        { icon: '💰', label: 'Custo Típico', text: 'Médio a Alto. Varia com a concorrência por palavras-chave.' },
+                        { icon: '📈', label: 'Estágio do Funil', text: 'Meio/Fundo (Decisão). Perfeito para o momento da necessidade.' }
+                    ]
+                },
+                meta: {
+                    title: 'Meta Ads (Facebook/Instagram)',
+                    content: [
+                        { icon: '🎯', label: 'Força Primária', text: 'Alcance massivo e, principalmente, remarketing de baixo custo.' },
+                        { icon: '🤔', label: 'Mentalidade do Público', text: 'Social, passivo, entretenimento. A atenção precisa ser capturada.' },
+                        { icon: '💰', label: 'Custo Típico', text: 'Baixo a Médio. Muito eficiente para reengajamento.' },
+                        { icon: '📈', label: 'Estágio do Funil', text: 'Topo (Reconhecimento) e Fundo (Remarketing).' }
+                    ]
+                }
+            };
+
+            const copyData = {
+                aida: {
+                    title: 'AIDA: Atenção, Interesse, Desejo, Ação',
+                    steps: [
+                        "<strong>Atenção:</strong> 'Sua PME está vazando dinheiro?'",
+                        "<strong>Interesse:</strong> '78% das PMEs falham por má gestão de caixa. Nosso guia ensina a evitar.'",
+                        "<strong>Desejo:</strong> 'Imagine tomar decisões financeiras com 100% de confiança.'",
+                        "<strong>Ação:</strong> 'Baixe o guia agora e assuma o controle.'"
+                    ]
+                },
+                pas: {
+                    title: 'PAS: Problema, Agitação, Solução',
+                    steps: [
+                        "<strong>Problema:</strong> 'Você se sente no escuro sobre a real saúde financeira da sua empresa?'",
+                        "<strong>Agitação:</strong> 'Essa incerteza leva a noites mal dormidas e oportunidades perdidas.'",
+                        "<strong>Solução:</strong> 'Nosso ebook é o seu farol. Transforme dados em lucro e tranquilidade.'"
+                    ]
+                }
+            };
+            
+            const optimizationData = {
+                ctr: {
+                    title: 'Causa: Anúncio não relevante ou atrativo.',
+                    action: '<strong>Ação:</strong> Teste A/B de novas imagens/vídeos e headlines. Refine a copy para focar mais na dor do público. Revise a segmentação.'
+                },
+                cpc: {
+                    title: 'Causa: Alta concorrência ou baixa qualidade do anúncio.',
+                    action: '<strong>Ação:</strong> Refine a segmentação para um nicho mais específico. No Google, melhore a relevância entre palavra-chave, anúncio e landing page para aumentar o Índice de Qualidade.'
+                },
+                conversion: {
+                    title: 'Causa: A página de captura não está convencendo.',
+                    action: '<strong>Ação:</strong> Teste A/B do título da página, adicione ou melhore a prova social (depoimentos), simplifique o formulário ou reescreva a copy para ser mais persuasiva.'
+                },
+                cpl: {
+                    title: 'Causa: Gargalo em alguma etapa do funil.',
+                    action: '<strong>Ação:</strong> Diagnostique usando CTR e Taxa de Conversão para encontrar o ponto fraco. Se o CTR está baixo, o problema é o anúncio. Se a conversão está baixa, o problema é a landing page.'
+                }
+            };
+
+            function updateActiveTab(tab) {
+                tabs.forEach(t => {
+                    t.classList.remove('tab-active');
+                    t.classList.add('tab-inactive');
+                });
+                tab.classList.add('tab-active');
+                tab.classList.remove('tab-inactive');
+            }
+
+            function updateActiveSection(tabId) {
+                sections.forEach(s => {
+                    if (s.id === tabId) {
+                        s.classList.add('active');
+                        s.classList.add('fade-in');
+                    } else {
+                        s.classList.remove('active');
+                    }
+                });
+            }
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.dataset.tab;
+                    updateActiveTab(tab);
+                    updateActiveSection(tabId);
+                });
+            });
+
+            function updatePlatformContent(platform) {
+                platformContent.innerHTML = '';
+                const data = platformData[platform].content;
+                data.forEach(item => {
+                    platformContent.innerHTML += `
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 text-xl mr-3">${item.icon}</div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800">${item.label}</h4>
+                                <p class="text-sm text-gray-600">${item.text}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            
+            platformTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    platformTabs.forEach(t => {
+                        t.classList.remove('border-blue-500', 'text-gray-700');
+                        t.classList.add('border-transparent', 'text-gray-500');
+                    });
+                    tab.classList.add('border-blue-500', 'text-gray-700');
+                    tab.classList.remove('border-transparent', 'text-gray-500');
+                    updatePlatformContent(tab.dataset.platform);
+                });
+            });
+
+            function updateCopyContent(copyType) {
+                const data = copyData[copyType];
+                let contentHTML = `<h5 class="font-bold mb-2">${data.title}</h5><ul class="space-y-1 list-disc list-inside">`;
+                data.steps.forEach(step => {
+                    contentHTML += `<li>${step}</li>`;
+                });
+                contentHTML += `</ul>`;
+                copyContent.innerHTML = contentHTML;
+            }
+
+            copyTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    copyTabs.forEach(t => {
+                        t.classList.remove('bg-blue-100', 'text-blue-700');
+                        t.classList.add('bg-gray-100', 'text-gray-600');
+                    });
+                    tab.classList.add('bg-blue-100', 'text-blue-700');
+                    tab.classList.remove('bg-gray-100', 'text-gray-600');
+                    updateCopyContent(tab.dataset.copy);
+                });
+            });
+            
+            problemSelector.addEventListener('change', (e) => {
+                const problem = e.target.value;
+                if(problem === 'none') {
+                    solutionBox.classList.add('hidden');
+                    return;
+                }
+                const data = optimizationData[problem];
+                solutionBox.innerHTML = `
+                    <p class="font-bold mb-1">${data.title}</p>
+                    <p class="text-sm">${data.action}</p>
+                `;
+                solutionBox.classList.remove('hidden');
+            });
+            
+            const lpItems = document.querySelectorAll('.lp-item');
+            lpItems.forEach(item => {
+                item.style.cursor = 'pointer';
+                item.addEventListener('mouseenter', () => {
+                    item.classList.add('text-blue-600', 'font-semibold');
+                });
+                item.addEventListener('mouseleave', () => {
+                    item.classList.remove('text-blue-600', 'font-semibold');
+                });
+            });
+
+            const ctx = document.getElementById('platformChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Meta Ads', 'Google Ads', 'LinkedIn Ads'],
+                    datasets: [
+                        {
+                            label: 'Custo Relativo',
+                            data: [3, 7, 9],
+                            backgroundColor: '#93c5fd',
+                            borderColor: '#3b82f6',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Precisão B2B Relativa',
+                            data: [5, 8, 10],
+                            backgroundColor: '#6b7280',
+                            borderColor: '#374151',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { display: false },
+                            grid: { display: false },
+                            title: { display: true, text: 'Nível Relativo (Baixo a Alto)', color: '#4b5563' }
+                        },
+                        x: {
+                            grid: { display: false },
+                             ticks: { color: '#4b5563', font: { weight: '600' } }
+                        }
+                    },
+                    plugins: {
+                        legend: { position: 'top', labels: { color: '#4b5563' } },
+                        tooltip: {
+                            enabled: true,
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    let value = context.parsed.y;
+                                    if (value <= 3) return label + 'Baixo';
+                                    if (value <= 7) return label + 'Médio';
+                                    return label + 'Alto';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            updatePlatformContent('linkedin');
+            updateCopyContent('aida');
+        });
+    </script>
+
+</body>
+</html>
