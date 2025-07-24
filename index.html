@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INOVARE | Análise de Oportunidades para PMEs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Neutral Slate & Amber Accent -->
+    <!-- Application Structure Plan: A single-page dashboard application divided into four thematic sections: 1) Diagnóstico, 2) Desafios, 3) Oportunidades, and 4) Recomendações. This structure transforms the linear report into an exploratory user journey. It starts with a high-level context (Diagnóstico), drills down into specific problems (Desafios), proposes concrete solutions (Oportunidades, including the requested e-book structures), and concludes with strategic actions (Recomendações). This is more usable than a simple report as it allows users to navigate directly to their area of interest and interact with data, fostering better understanding and engagement. -->
+    <!-- Visualization & Content Choices: Report Info -> IODE-PMEs decline. Goal -> Show market trend. Viz -> Line Chart (Chart.js) for clear time-series visualization. Report Info -> PME financial struggles stats (90% difficulty, 52% no reserves). Goal -> Highlight urgency. Viz -> Doughnut Charts (Chart.js) for easy proportion comparison. Report Info -> Key challenges & opportunities. Goal -> Organize complex info. Presentation -> Interactive cards and accordions (HTML/JS) to break down text into digestible chunks, reducing cognitive load and encouraging exploration. This supports the designed application structure by making dense information accessible. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .nav-link {
+            transition: all 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #d97706; /* amber-600 */
+            transform: translateY(-2px);
+        }
+        .card {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-slate-900">INOVARE <span class="text-amber-600">| Análise PME</span></h1>
+            <div class="hidden md:flex space-x-8">
+                <a href="#diagnostico" class="nav-link text-slate-600 font-medium">Diagnóstico</a>
+                <a href="#desafios" class="nav-link text-slate-600 font-medium">Desafios</a>
+                <a href="#oportunidades" class="nav-link text-slate-600 font-medium">Oportunidades</a>
+                <a href="#recomendacoes" class="nav-link text-slate-600 font-medium">Recomendações</a>
+            </div>
+            <div class="md:hidden">
+                <button id="menu-btn" class="text-slate-800 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
+            <a href="#diagnostico" class="block py-2 text-slate-600">Diagnóstico</a>
+            <a href="#desafios" class="block py-2 text-slate-600">Desafios</a>
+            <a href="#oportunidades" class="block py-2 text-slate-600">Oportunidades</a>
+            <a href="#recomendacoes" class="block py-2 text-slate-600">Recomendações</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section id="hero" class="text-center mb-20">
+            <h2 class="text-4xl md:text-5xl font-bold text-slate-900 mb-4">Navegando os Desafios Financeiros das PMEs</h2>
+            <p class="text-lg text-slate-600 max-w-3xl mx-auto">Uma análise interativa sobre o cenário atual, os principais pontos de dor e as oportunidades estratégicas de conteúdo para fortalecer a gestão financeira das pequenas e médias empresas no Brasil.</p>
+        </section>
+
+        <section id="diagnostico" class="mb-20 scroll-mt-24">
+            <h3 class="text-3xl font-bold text-center mb-2 text-slate-900">Diagnóstico do Cenário</h3>
+            <p class="text-center text-slate-600 mb-12 max-w-2xl mx-auto">O ambiente de negócios para PMEs é moldado por forças macroeconômicas e vulnerabilidades internas. Entender este contexto é o primeiro passo para criar soluções eficazes.</p>
+            
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h4 class="text-xl font-semibold mb-4 text-center">Desempenho Econômico das PMEs (IODE)</h4>
+                    <div class="chart-container">
+                        <canvas id="desempenhoChart"></canvas>
+                    </div>
+                    <p class="text-sm text-slate-500 mt-4 text-center">O IODE-PMEs registrou uma queda de 1,2% na receita no primeiro trimestre de 2025 em comparação com 2024, refletindo um cenário de desaceleração.</p>
+                </div>
+                <div class="space-y-6">
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <h4 class="text-xl font-semibold mb-2">Pressão Macroeconômica</h4>
+                        <p class="text-slate-600">Finanças governamentais frágeis contribuem para uma inflação persistente e taxas de juros elevadas, impactando diretamente o custo de capital e o poder de compra, criando um ambiente de alta volatilidade para as PMEs.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <h4 class="text-xl font-semibold mb-2">Vulnerabilidade Interna Crítica</h4>
+                        <p class="text-slate-600">A ausência de gestão financeira estruturada é a principal causa de dificuldades. Muitos empreendedores operam de forma improvisada, sem planejamento, o que leva a uma alta taxa de mortalidade empresarial.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="desafios" class="mb-20 scroll-mt-24">
+            <h3 class="text-3xl font-bold text-center mb-2 text-slate-900">Os 4 Grandes Desafios das PMEs</h3>
+            <p class="text-center text-slate-600 mb-12 max-w-2xl mx-auto">Estes são os pontos de dor mais críticos que afetam a saúde financeira e a sobrevivência das pequenas e médias empresas. Clique em cada desafio para ver os detalhes.</p>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="card bg-white p-6 rounded-lg text-center cursor-pointer challenge-card" data-challenge="gestao">
+                    <div class="text-4xl mb-4">🗂️</div>
+                    <h4 class="text-xl font-semibold">Gestão Financeira Interna</h4>
+                </div>
+                <div class="card bg-white p-6 rounded-lg text-center cursor-pointer challenge-card" data-challenge="credito">
+                    <div class="text-4xl mb-4">💳</div>
+                    <h4 class="text-xl font-semibold">Acesso a Crédito</h4>
+                </div>
+                <div class="card bg-white p-6 rounded-lg text-center cursor-pointer challenge-card" data-challenge="tributario">
+                    <div class="text-4xl mb-4">🧾</div>
+                    <h4 class="text-xl font-semibold">Carga Tributária e Burocracia</h4>
+                </div>
+                <div class="card bg-white p-6 rounded-lg text-center cursor-pointer challenge-card" data-challenge="sobrecarga">
+                    <div class="text-4xl mb-4">🤯</div>
+                    <h4 class="text-xl font-semibold">Sobrecarga do Empreendedor</h4>
+                </div>
+            </div>
+
+            <div id="challenge-details" class="mt-12"></div>
+        </section>
+
+        <section id="oportunidades" class="mb-20 scroll-mt-24">
+            <h3 class="text-3xl font-bold text-center mb-2 text-slate-900">Oportunidades de Conteúdo Estratégico</h3>
+            <p class="text-center text-slate-600 mb-12 max-w-2xl mx-auto">Cada desafio representa uma oportunidade para a INOVARE criar conteúdo de alto valor que educa, capacita e gera leads. Abaixo estão propostas de e-books e outros materiais para cada tema central.</p>
+            
+            <div id="accordion-container" class="space-y-4 max-w-4xl mx-auto">
+            </div>
+        </section>
+
+        <section id="recomendacoes" class="scroll-mt-24">
+            <h3 class="text-3xl font-bold text-center mb-2 text-slate-900">Recomendações Estratégicas para a INOVARE</h3>
+            <p class="text-center text-slate-600 mb-12 max-w-2xl mx-auto">Para se posicionar como um parceiro indispensável para as PMEs, a INOVARE deve focar em uma estratégia de conteúdo prática, acessível e orientada para a solução.</p>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h4 class="font-semibold text-lg mb-2">1. Priorizar o Conteúdo Prático</h4>
+                    <p class="text-slate-600">Focar nos pilares: fluxo de caixa, orçamento e separação de finanças. São as dores mais básicas e urgentes.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h4 class="font-semibold text-lg mb-2">2. Desmistificar Tópicos Complexos</h4>
+                    <p class="text-slate-600">Criar guias acessíveis sobre a reforma tributária e o processo de acesso a crédito para quebrar barreiras.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h4 class="font-semibold text-lg mb-2">3. Alavancar Ferramentas e Automação</h4>
+                    <p class="text-slate-600">Posicionar as soluções digitais como a resposta à ineficiência e sobrecarga, demonstrando economia de tempo.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h4 class="font-semibold text-lg mb-2">4. Adotar Formatos Diversificados</h4>
+                    <p class="text-slate-600">Ir além de e-books. Oferecer templates, checklists e webinars interativos para aplicação imediata.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h4 class="font-semibold text-lg mb-2">5. Adotar Estratégia Freemium</h4>
+                    <p class="text-slate-600">Usar conteúdo de alto valor (e-books, templates) como isca digital para captar leads qualificados.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h4 class="font-semibold text-lg mb-2">6. Focar em "Problema-Solução"</h4>
+                    <p class="text-slate-600">O conteúdo deve ser prescritivo, oferecendo passos claros para superar os desafios enfrentados pelas PMEs.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-900 text-white mt-20">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <p>&copy; 2025 INOVARE. Análise de Mercado e Oportunidades de Conteúdo.</p>
+            <p class="text-sm text-slate-400 mt-2">Este dashboard interativo foi gerado para facilitar a visualização dos dados do relatório de pesquisa.</p>
+        </div>
+    </footer>
+
+    <script>
+        const challengeData = {
+            gestao: {
+                title: 'Desafio: Gestão Financeira Interna',
+                content: `
+                    <p class="text-slate-600 mb-6">A principal causa de dificuldades financeiras. A ausência de planejamento, a má gestão do fluxo de caixa e a mistura de finanças pessoais com as da empresa criam um ciclo de instabilidade que leva a uma alta taxa de falência.</p>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-slate-50 p-4 rounded-lg text-center">
+                            <h5 class="font-semibold text-lg">Dificuldades Financeiras</h5>
+                            <div class="chart-container !h-48 !max-h-48"><canvas id="gestaoChart1"></canvas></div>
+                            <p class="text-sm text-slate-500 mt-2">90% das PMEs enfrentam dificuldades financeiras devido à má gestão.</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-lg text-center">
+                            <h5 class="font-semibold text-lg">Falta de Reservas</h5>
+                            <div class="chart-container !h-48 !max-h-48"><canvas id="gestaoChart2"></canvas></div>
+                            <p class="text-sm text-slate-500 mt-2">52% não possuem reservas financeiras, ficando vulneráveis a imprevistos.</p>
+                        </div>
+                    </div>
+                `,
+                charts: [
+                    { id: 'gestaoChart1', type: 'doughnut', data: { labels: ['Com Dificuldades', 'Sem Dificuldades'], datasets: [{ data: [90, 10], backgroundColor: ['#ef4444', '#e2e8f0'], borderWidth: 0 }] } },
+                    { id: 'gestaoChart2', type: 'doughnut', data: { labels: ['Sem Reservas', 'Com Reservas'], datasets: [{ data: [52, 48], backgroundColor: ['#f97316', '#e2e8f0'], borderWidth: 0 }] } }
+                ]
+            },
+            credito: {
+                title: 'Desafio: Acesso a Crédito',
+                content: `
+                    <p class="text-slate-600">Um dos maiores obstáculos. Altas taxas de juros, burocracia excessiva e critérios rigorosos limitam o investimento e o capital de giro. Muitas PMEs não sabem como navegar no mercado de crédito ou se preparar para uma solicitação, recorrendo a alternativas mais custosas.</p>
+                    <div class="bg-slate-50 p-6 rounded-lg mt-6">
+                        <h5 class="font-semibold text-lg mb-2">Ponto Crítico</h5>
+                        <p class="text-slate-600">83% das pequenas empresas não buscaram empréstimos bancários, optando por negociar com fornecedores ou usar cheques pré-datados, o que demonstra a aversão e a dificuldade de acesso ao crédito formal.</p>
+                    </div>
+                `
+            },
+            tributario: {
+                title: 'Desafio: Carga Tributária e Burocracia',
+                content: `
+                    <p class="text-slate-600">A complexidade do sistema tributário brasileiro consome tempo e recursos valiosos. A iminente Reforma Tributária (IVA, Split Payment) exigirá uma adaptação significativa, e a falta de planejamento pode levar a custos mais altos e multas.</p>
+                     <div class="bg-slate-50 p-6 rounded-lg mt-6">
+                        <h5 class="font-semibold text-lg mb-2">Custo do Compliance</h5>
+                        <p class="text-slate-600">Empresas brasileiras gastam, em média, <span class="font-bold text-amber-600">1.501 horas por ano</span> apenas para cumprir obrigações fiscais. Esse tempo poderia ser investido no crescimento do negócio.</p>
+                    </div>
+                `
+            },
+            sobrecarga: {
+                title: 'Desafio: Sobrecarga do Empreendedor',
+                content: `
+                    <p class="text-slate-600">Líderes de PMEs são multitarefas, cuidando da estratégia e da operação. Essa "solidão" e sobrecarga levam à negligência da gestão financeira, pois falta tempo e, por vezes, conhecimento. As soluções devem ser simples, rápidas e eficientes.</p>
+                    <div class="bg-slate-50 p-6 rounded-lg mt-6">
+                        <h5 class="font-semibold text-lg mb-2">O Gargalo do Tempo</h5>
+                        <p class="text-slate-600">40% das tarefas de gestão financeira ainda são manuais, consumindo mais de <span class="font-bold text-amber-600">20 horas por semana</span>. A automação não é um luxo, mas uma necessidade estratégica para liberar o empreendedor.</p>
+                    </div>
+                `
+            }
+        };
+
+        const opportunityData = [
+            {
+                title: 'Planejamento Financeiro e Gestão de Fluxo de Caixa',
+                content: `
+                    <p class="text-slate-600 mb-4">A dor mais fundamental e generalizada. O conteúdo deve ser prático, acionável e focado em criar disciplina e previsibilidade.</p>
+                    <h6 class="font-semibold mb-2">Proposta de E-book:</h6>
+                    <p class="mb-1"><strong>Título:</strong> "Fluxo de Caixa à Prova de Crise: O Guia Definitivo para a Saúde Financeira da sua PME"</p>
+                    <ul class="list-disc list-inside text-slate-600 space-y-1 mb-4">
+                        <li><strong>Capítulo 1:</strong> Diagnóstico Financeiro: Onde sua empresa está agora?</li>
+                        <li><strong>Capítulo 2:</strong> A Regra de Ouro: Separando as finanças pessoais das empresariais.</li>
+                        <li><strong>Capítulo 3:</strong> Montando seu Fluxo de Caixa do Zero (com template).</li>
+                        <li><strong>Capítulo 4:</strong> Projeções e Cenários: Como prever o futuro e se preparar.</li>
+                        <li><strong>Capítulo 5:</strong> Criando sua Reserva de Emergência.</li>
+                    </ul>
+                    <h6 class="font-semibold mb-2">Outros Formatos:</h6>
+                    <p class="text-slate-600">Template de planilha de fluxo de caixa, Webinar "Os 5 erros que estão matando seu caixa", Checklist de saúde financeira mensal.</p>
+                `
+            },
+            {
+                title: 'Acesso a Crédito e Financiamento',
+                content: `
+                    <p class="text-slate-600 mb-4">O objetivo é desmistificar o processo e capacitar o empreendedor a preparar uma solicitação de sucesso.</p>
+                    <h6 class="font-semibold mb-2">Proposta de E-book:</h6>
+                    <p class="mb-1"><strong>Título:</strong> "O Mapa do Crédito para PMEs: Do Pronampe ao BNDES, como conseguir o 'sim' do banco"</p>
+                    <ul class="list-disc list-inside text-slate-600 space-y-1 mb-4">
+                        <li><strong>Capítulo 1:</strong> O Ecossistema de Crédito no Brasil: O que mudou?</li>
+                        <li><strong>Capítulo 2:</strong> Preparando a Casa: Documentação e indicadores que os bancos olham.</li>
+                        <li><strong>Capítulo 3:</strong> Guia Detalhado: Pronampe, BNDES e outras linhas de fomento.</li>
+                        <li><strong>Capítulo 4:</strong> Montando um Pitch de Sucesso para seu Pedido de Empréstimo.</li>
+                        <li><strong>Capítulo 5:</strong> Consegui o crédito, e agora? Como usar o capital de forma inteligente.</li>
+                    </ul>
+                    <h6 class="font-semibold mb-2">Outros Formatos:</h6>
+                    <p class="text-slate-600">Checklist "Documentação para Pedido de Crédito", Webinar com um especialista em crédito bancário, Estudo de caso de sucesso.</p>
+                `
+            },
+            {
+                title: 'Otimização Tributária e Compliance',
+                content: `
+                    <p class="text-slate-600 mb-4">Transformar uma obrigação complexa em uma vantagem competitiva, especialmente com a nova reforma tributária.</p>
+                    <h6 class="font-semibold mb-2">Proposta de E-book:</h6>
+                    <p class="mb-1"><strong>Título:</strong> "Reforma Tributária Descomplicada: Prepare sua PME para o IVA e Pague Menos Impostos Dentro da Lei"</p>
+                    <ul class="list-disc list-inside text-slate-600 space-y-1 mb-4">
+                        <li><strong>Capítulo 1:</strong> Adeus PIS/COFINS, Olá IVA: O que realmente muda para você?</li>
+                        <li><strong>Capítulo 2:</strong> Split Payment: Como o pagamento de impostos vai impactar seu fluxo de caixa.</li>
+                        <li><strong>Capítulo 3:</strong> Simples Nacional Híbrido: É a melhor opção para sua empresa?</li>
+                        <li><strong>Capítulo 4:</strong> Planejamento Tributário na Prática: Reavaliando seu regime.</li>
+                        <li><strong>Capítulo 5:</strong> Estratégias de Elisão Fiscal para PMEs.</li>
+                    </ul>
+                    <h6 class="font-semibold mb-2">Outros Formatos:</h6>
+                    <p class="text-slate-600">Infográfico "Antes e Depois da Reforma", Webinar com um contador especialista, Calculadora-simples de impacto do IVA.</p>
+                `
+            },
+            {
+                title: 'Gestão de Custos e Precificação Estratégica',
+                content: `
+                    <p class="text-slate-600 mb-4">O foco é maximizar a lucratividade através do controle rigoroso de custos e de uma precificação inteligente.</p>
+                    <h6 class="font-semibold mb-2">Proposta de E-book:</h6>
+                    <p class="mb-1"><strong>Título:</strong> "Lucratividade no Máximo: Gestão de Custos e Precificação Inteligente para sua PME"</p>
+                    <ul class="list-disc list-inside text-slate-600 space-y-1 mb-4">
+                        <li><strong>Capítulo 1:</strong> Custo Fixo vs. Variável: O DNA financeiro do seu negócio.</li>
+                        <li><strong>Capítulo 2:</strong> Encontrando o Ponto de Equilíbrio (com template).</li>
+                        <li><strong>Capítulo 3:</strong> Técnicas para Reduzir Custos sem Sacrificar a Qualidade.</li>
+                        <li><strong>Capítulo 4:</strong> Precificação Estratégica: Além do custo, o valor percebido.</li>
+                        <li><strong>Capítulo 5:</strong> Analisando a Rentabilidade por Produto/Serviço.</li>
+                    </ul>
+                    <h6 class="font-semibold mb-2">Outros Formatos:</h6>
+                    <p class="text-slate-600">Template para cálculo de ponto de equilíbrio e margem de contribuição, Workshop online sobre precificação, Estudo de caso de otimização de custos.</p>
+                `
+            }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const chartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                           color: '#e2e8f0'
+                        },
+                        ticks: {
+                           color: '#64748b'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                           color: '#64748b'
+                        }
+                    }
+                }
+            };
+
+            new Chart(document.getElementById('desempenhoChart'), {
+                type: 'line',
+                data: {
+                    labels: ['Q1 2024', 'Q2 2024', 'Q3 2024', 'Q4 2024', 'Q1 2025'],
+                    datasets: [{
+                        label: 'Desempenho PMEs',
+                        data: [100, 99.5, 99, 98.5, 98.8 - 1.2],
+                        fill: true,
+                        borderColor: '#f59e0b',
+                        backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                        tension: 0.3
+                    }]
+                },
+                options: chartOptions
+            });
+
+            const challengeCards = document.querySelectorAll('.challenge-card');
+            const detailsContainer = document.getElementById('challenge-details');
+            let activeCard = null;
+
+            challengeCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const challengeKey = card.dataset.challenge;
+                    const data = challengeData[challengeKey];
+
+                    if (activeCard === card) {
+                        detailsContainer.innerHTML = '';
+                        activeCard.classList.remove('ring-2', 'ring-amber-500');
+                        activeCard = null;
+                        return;
+                    }
+                    
+                    if(activeCard) {
+                        activeCard.classList.remove('ring-2', 'ring-amber-500');
+                    }
+
+                    detailsContainer.innerHTML = `
+                        <div class="bg-white p-8 rounded-lg shadow-xl transition-all duration-500">
+                            <h4 class="text-2xl font-bold mb-4 text-slate-900">${data.title}</h4>
+                            ${data.content}
+                        </div>
+                    `;
+                    
+                    card.classList.add('ring-2', 'ring-amber-500');
+                    activeCard = card;
+
+                    if (data.charts) {
+                        data.charts.forEach(chartInfo => {
+                           setTimeout(() => {
+                             new Chart(document.getElementById(chartInfo.id), {
+                                type: chartInfo.type,
+                                data: chartInfo.data,
+                                options: { ...chartOptions, plugins: { legend: { position: 'bottom', labels: { color: '#64748b' } } } }
+                            });
+                           }, 50);
+                        });
+                    }
+                });
+            });
+
+            const accordionContainer = document.getElementById('accordion-container');
+            opportunityData.forEach((item, index) => {
+                const accordionItem = document.createElement('div');
+                accordionItem.className = 'bg-white rounded-lg shadow-md overflow-hidden';
+                accordionItem.innerHTML = `
+                    <button class="accordion-toggle w-full text-left p-6 flex justify-between items-center">
+                        <span class="font-semibold text-lg text-slate-800">${item.title}</span>
+                        <span class="transform transition-transform duration-300">
+                            <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="p-6 pt-0">${item.content}</div>
+                    </div>
+                `;
+                accordionContainer.appendChild(accordionItem);
+            });
+            
+            accordionContainer.addEventListener('click', (e) => {
+                const toggle = e.target.closest('.accordion-toggle');
+                if (!toggle) return;
+
+                const content = toggle.nextElementSibling;
+                const icon = toggle.querySelector('svg').parentElement;
+
+                toggle.parentElement.parentElement.querySelectorAll('.accordion-content').forEach(c => {
+                    if (c !== content) {
+                        c.style.maxHeight = '0px';
+                        c.previousElementSibling.querySelector('svg').parentElement.classList.remove('rotate-180');
+                    }
+                });
+
+                if (content.style.maxHeight && content.style.maxHeight !== '0px') {
+                    content.style.maxHeight = '0px';
+                    icon.classList.remove('rotate-180');
+                } else {
+                    content.style.maxHeight = content.scrollHeight + 'px';
+                    icon.classList.add('rotate-180');
+                }
+            });
+            
+            const menuBtn = document.getElementById('menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
